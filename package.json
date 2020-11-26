@@ -5,11 +5,31 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "db:gen": "prisma generate",
+    "db:save": "prisma migrate save --experimental",
+    "db:up": "prisma migrate up --experimental",
+    "db:studio": "prisma studio",
+    "db:introspect": "prisma introspect"
   },
   "dependencies": {
+    "@headlessui/react": "^0.2.0",
+    "@prisma/client": "^2.12.1",
+    "@tailwindcss/forms": "^0.2.1",
+    "@tailwindcss/typography": "^0.3.1",
+    "autoprefixer": "^10.0.2",
     "next": "10.0.3",
+    "next-auth": "^3.1.0",
+    "postcss": "^8.1.10",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-hook-form": "^6.11.5",
+    "react-icons": "^3.11.0",
+    "tailwindcss": "^2.0.1"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.12.1",
+    "@types/node": "^14.14.9",
+    "@types/react": "^17.0.0",
+    "typescript": "^4.1.2"
   }
 }
