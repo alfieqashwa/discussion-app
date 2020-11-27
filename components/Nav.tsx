@@ -5,7 +5,7 @@ import { signIn, signOut, useSession } from 'next-auth/client';
 
 import { baseUrl } from 'utils/baseUrl';
 
-export default function Nav() {
+export default function Nav({ profileImg }) {
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -108,7 +108,7 @@ export default function Nav() {
                         <span className='sr-only'>Open user menu</span>
                         <img
                           className='w-8 h-8 rounded-full'
-                          src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                          src={profileImg}
                           alt=''
                         />
                       </button>
