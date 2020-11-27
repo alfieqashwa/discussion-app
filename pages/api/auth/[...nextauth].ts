@@ -22,10 +22,10 @@ const options = {
   secret: process.env.SECRET,
 
   callbacks: {
-    // redirect: async (url, baseUrl) => {
-    //   return url.startsWith(baseUrl)
-    //     ? Promise.resolve(url)
-    //     : Promise.resolve(baseUrl);
-    // },
+    redirect: async (url, baseUrl) => {
+      return url.startsWith(baseUrl)
+        ? Promise.resolve(url)
+        : Promise.resolve(baseUrl);
+    },
   },
 };
