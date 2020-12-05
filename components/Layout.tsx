@@ -1,19 +1,28 @@
-import { profile } from 'console';
+import useSWR from 'swr';
+import { useSession } from 'next-auth/client';
+
 import Header from './Header';
 import Nav from './Nav';
 
 export default function Layout({
   title = 'Home',
   children,
-  profileImg = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }: {
   title?: string;
   children: any;
-  profileImg?: string;
 }) {
+  const [session, loading] = useSession();
+
+  const { data: users, error } = useSWR('api/user', { refreshInterval: 0 }); // override
+
+  if (error) return <div>failed to load</div>;
+  if (!users) return <div>Loading...</div>;
+
+  const user = users.filter((user) => user.email === session?.user.email);
+
   return (
     <div className=''>
-      <Nav profileImg={profileImg} />
+      <Nav user={user} />
       <Header title={title} />
       <main>
         <div className='py-6 sm:px-6 lg:px-8'>

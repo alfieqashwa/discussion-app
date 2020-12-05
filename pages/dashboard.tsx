@@ -1,14 +1,14 @@
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { GetStaticProps } from 'next';
-import { PrismaClient } from '@prisma/client';
+import useSWR from 'swr';
 import { useSession } from 'next-auth/client';
 
 import Layout from 'components/Layout';
 
-const Dashboard: FC<{ allUsers: [UserProps] }> = ({ allUsers }) => {
+const Dashboard: FC = () => {
   const [session, loading] = useSession();
   const router = useRouter();
+  const { data: users, error } = useSWR('api/user', { refreshInterval: 0 }); // override
 
   useEffect(() => {
     if (!(session || loading)) {
@@ -16,15 +16,18 @@ const Dashboard: FC<{ allUsers: [UserProps] }> = ({ allUsers }) => {
     }
   }, [session, loading]);
 
-  const user = allUsers.filter((user) => user.email === session?.user.email);
+  if (error) return <div>failed to load</div>;
+  if (!users) return <div>Loading...</div>;
+
+  const user = users.filter((user) => user.email === session?.user.email);
   return (
-    <Layout title='Dashboard' profileImg={user[0]?.image}>
+    <Layout title='Dashboard'>
       <div className='text-center'>
         <h1 className='text-2xl'>Dashboard Page</h1>
         <div className='mt-8 space-y-4'>
           <h1 className='text-2xl capitalize'>from prisma database</h1>
           <ul className='px-2 py-4 space-y-8 text-xl'>
-            {allUsers.map((user) => (
+            {user.map((user) => (
               <li
                 key={user.id}
                 className='flex items-center justify-center space-x-2'>
@@ -51,25 +54,6 @@ const Dashboard: FC<{ allUsers: [UserProps] }> = ({ allUsers }) => {
       </div>
     </Layout>
   );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  const prisma = new PrismaClient();
-  const allUsers = await prisma.user.findMany({
-    select: { id: true, email: true, name: true, image: true },
-  });
-
-  return {
-    props: { allUsers },
-  };
-};
-
-export type UserProps = {
-  id?: number;
-  email: string;
-  name: string;
-  image?: string | null;
-  entityImage?: string | null;
 };
 
 export default Dashboard;

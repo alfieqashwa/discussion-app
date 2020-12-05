@@ -25,6 +25,7 @@
     "react-dom": "17.0.1",
     "react-hook-form": "^6.11.5",
     "react-icons": "^3.11.0",
+    "swr": "^0.3.9",
     "tailwindcss": "^2.0.1"
   },
   "devDependencies": {
