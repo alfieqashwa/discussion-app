@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { Transition } from '@headlessui/react';
 import { signIn, signOut, useSession } from 'next-auth/client';
 
-import { baseUrl } from 'utils/baseUrl';
+import { ActiveLink } from './ActiveLink';
+import { ProfileImage } from './ProfileImage';
 
-export default function Nav({ user }) {
+import { baseUrl } from 'utils/baseUrl';
+import { menuProps, menus } from 'utils/menuNav';
+
+export default function Nav() {
+  const router = useRouter();
   const [session, loading] = useSession();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -40,42 +45,36 @@ export default function Nav({ user }) {
               <div className='hidden md:block'>
                 <div className='flex items-baseline ml-10 space-x-4'>
                   {!session ? (
-                    <Link href='/'>
-                      <a className='px-4 py-2 text-sm font-medium text-gray-300 bg-gray-900 rounded-md'>
+                    <ActiveLink href='/'>
+                      <a
+                        className={`px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' ${
+                          router.pathname === '/' ? 'bg-gray-900' : ''
+                        }`}>
                         Home
                       </a>
-                    </Link>
+                    </ActiveLink>
                   ) : (
-                    <Link href='/dashboard'>
-                      <a className='px-3 py-2 text-sm font-medium text-gray-300 bg-gray-900 rounded-md'>
+                    <ActiveLink href='/dashboard'>
+                      <a
+                        className={`px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' ${
+                          router.pathname === '/dashboard' ? 'bg-gray-900' : ''
+                        }`}>
                         Dashboard
                       </a>
-                    </Link>
+                    </ActiveLink>
                   )}
-
-                  <Link href='/articles'>
-                    <a className='px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                      Articles
-                    </a>
-                  </Link>
-
-                  <Link href='/events'>
-                    <a className='px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                      Events
-                    </a>
-                  </Link>
-
-                  <Link href='/members'>
-                    <a className='px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                      Members
-                    </a>
-                  </Link>
-
-                  <Link href='/reports'>
-                    <a className='px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                      Reports
-                    </a>
-                  </Link>
+                  {menus.map((menu: menuProps) => (
+                    <div key={menu.id}>
+                      <ActiveLink href={menu.path}>
+                        <a
+                          className={`px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' ${
+                            router.pathname === menu.path ? 'bg-gray-900' : ''
+                          }`}>
+                          {menu.title}
+                        </a>
+                      </ActiveLink>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -83,7 +82,7 @@ export default function Nav({ user }) {
               <button
                 type='button'
                 onClick={handleSignIn}
-                className='hidden px-4 py-2 text-sm font-medium text-gray-300 rounded-md md:block hover:text-white hover:bg-gray-900 focus:outline-none'>
+                className='hidden px-4 py-2 text-sm font-medium text-gray-300 transition duration-150 ease-out rounded-md md:block hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
                 LOGIN
               </button>
             ) : (
@@ -115,16 +114,16 @@ export default function Nav({ user }) {
                         id='user-menu'
                         aria-haspopup='true'>
                         <span className='sr-only'>Open user menu</span>
-                        <Image
-                          className='w-10 h-10 rounded-full'
-                          src={user[0].image}
-                          alt={user[0].name}
+                        <ProfileImage
+                          src={session.user.image}
+                          alt={session.user.name}
                           width={36}
                           height={36}
                           layout='fixed'
                         />
                       </button>
                     </div>
+                    {/* Desktop View */}
                     <Transition
                       show={isOpen}
                       enter='transition ease-out duration-100 transform'
@@ -210,6 +209,7 @@ export default function Nav({ user }) {
             </div>
           </div>
         </div>
+        {/* Mobile View */}
         <Transition
           show={isOpen}
           enter='transition ease-out duration-100 transform'
@@ -269,18 +269,20 @@ export default function Nav({ user }) {
                   <div className='pt-4 pb-3 border-t border-gray-700'>
                     <div className='flex items-center px-5'>
                       <div className='flex-shrink-0'>
-                        <img
-                          className='w-10 h-10 rounded-full'
-                          src={user.image}
-                          alt={user.name}
+                        <ProfileImage
+                          src={session.user.image}
+                          alt={session.user.name}
+                          width={36}
+                          height={36}
+                          layout='fixed'
                         />
                       </div>
                       <div className='ml-3 space-y-1'>
                         <div className='text-base font-medium leading-none text-gray-400'>
-                          {user.name}
+                          {session.user.name}
                         </div>
                         <div className='text-sm font-medium leading-none text-gray-400'>
-                          {user.email}
+                          {session.user.email}
                         </div>
                       </div>
                       <button className='flex-shrink-0 p-1 ml-auto text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
