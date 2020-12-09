@@ -9,7 +9,7 @@ import { postList } from 'data/posts';
 
 const Home = () => {
   return (
-    <Layout>
+    <Layout title='Home'>
       <h1>Home Page</h1>
       <ul className='grid grid-cols-3 grid-rows-3 m-16 gap-14'>
         {postList.map((post) => (

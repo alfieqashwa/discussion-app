@@ -2,7 +2,7 @@ import Layout from 'components/Layout';
 
 const Events = () => {
   return (
-    <Layout>
+    <Layout title='Events'>
       <div>
         <h1 className='text-4xl text-center'>Events Page</h1>
       </div>

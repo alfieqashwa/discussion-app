@@ -3,13 +3,14 @@ import { useSession } from 'next-auth/client';
 
 import Header from './Header';
 import Nav from './Nav';
+import { ReactNode } from 'react';
 
 export default function Layout({
   title = 'Home',
   children,
 }: {
   title?: string;
-  children: any;
+  children: ReactNode;
 }) {
   const [session, loading] = useSession();
 
