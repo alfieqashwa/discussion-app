@@ -34,7 +34,7 @@ export default function Nav() {
           <div className='flex items-center justify-between h-16'>
             <div className='flex items-center'>
               <Link href='/'>
-                <a className='flex-shrink-0'>
+                <a className='flex-shrink-0 p-1 transition duration-150 ease-in-out rounded-md focus:bg-gray-700 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
                   <img
                     className='w-8 h-8'
                     src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'
@@ -45,14 +45,14 @@ export default function Nav() {
               <div className='hidden md:block'>
                 <div className='flex items-baseline ml-10 space-x-4'>
                   {!session ? (
-                    <ActiveLink href='/'>
+                    <Link href='/'>
                       <a
                         className={`px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' ${
                           router.pathname === '/' ? 'bg-gray-900' : ''
                         }`}>
                         Home
                       </a>
-                    </ActiveLink>
+                    </Link>
                   ) : (
                     <ActiveLink href='/dashboard'>
                       <a
@@ -115,10 +115,11 @@ export default function Nav() {
                         aria-haspopup='true'>
                         <span className='sr-only'>Open user menu</span>
                         <ProfileImage
+                          className='w-10 h-10 m-4 rounded-full ring-1 ring-blue-700'
                           src={session.user.image}
                           alt={session.user.name}
-                          width={36}
-                          height={36}
+                          width='36'
+                          height='36'
                           layout='fixed'
                         />
                       </button>
@@ -222,47 +223,43 @@ export default function Nav() {
             <div ref={ref} className='md:hidden'>
               <div className='px-2 pt-2 pb-3 space-y-1 sm:px-3'>
                 {!session ? (
-                  <Link href='/dashboard'>
-                    <a className='block px-3 py-2 text-base font-medium text-gray-300 bg-gray-900 rounded-md'>
+                  <ActiveLink href='/'>
+                    <a
+                      className={`block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white ${
+                        router.pathname === '/' ? 'bg-gray-900 rounded-md' : ''
+                      }`}>
                       Home
                     </a>
-                  </Link>
+                  </ActiveLink>
                 ) : (
-                  <Link href='/dashboard'>
-                    <a className='block px-3 py-2 text-base font-medium text-gray-300 bg-gray-900 rounded-md'>
+                  <ActiveLink href='/'>
+                    <a
+                      className={`block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white ${
+                        router.pathname === '/dashboard' ? 'bg-gray-900' : ''
+                      }`}>
                       Dashboard
                     </a>
-                  </Link>
+                  </ActiveLink>
                 )}
 
-                <Link href='/articles'>
-                  <a className='block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                    Articles
-                  </a>
-                </Link>
+                {menus.map((menu: menuProps) => (
+                  <div key={menu.id}>
+                    <ActiveLink href={menu.path}>
+                      <a
+                        className={`block px-3 py-2 text-base font-medium rounded-md text-gray-300 hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white ${
+                          router.pathname === menu.path ? 'bg-gray-900' : ''
+                        }`}>
+                        {menu.title}
+                      </a>
+                    </ActiveLink>
+                  </div>
+                ))}
 
-                <Link href='/events'>
-                  <a className='block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                    Events
-                  </a>
-                </Link>
-
-                <Link href='/members'>
-                  <a className='block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                    Members
-                  </a>
-                </Link>
-
-                <Link href='/reports'>
-                  <a className='block px-3 py-2 text-base font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700'>
-                    Reports
-                  </a>
-                </Link>
                 {!session ? (
                   <button
                     type='button'
                     onClick={handleSignIn}
-                    className='block py-4 mx-auto text-lg font-medium text-gray-400 bg-gray-900 rounded-lg focus:outline-none px-44 hover:text-gray-300 hover:bg-gray-700'>
+                    className='block py-3 mx-auto text-lg font-medium text-gray-300 transition duration-150 ease-in-out bg-gray-900 rounded-lg shadow-inner px-44 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
                     <h2>Login</h2>
                   </button>
                 ) : (
@@ -270,10 +267,11 @@ export default function Nav() {
                     <div className='flex items-center px-5'>
                       <div className='flex-shrink-0'>
                         <ProfileImage
+                          className='w-10 h-10 m-4 rounded-full ring-1 ring-blue-700'
                           src={session.user.image}
                           alt={session.user.name}
-                          width={36}
-                          height={36}
+                          width='36'
+                          height='36'
                           layout='fixed'
                         />
                       </div>
@@ -306,20 +304,20 @@ export default function Nav() {
                     <div className='px-2 mt-3 space-y-1'>
                       <a
                         href='#'
-                        className='block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700'>
+                        className='block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
                         Your Profile
                       </a>
 
                       <a
                         href='#'
-                        className='block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700'>
+                        className='block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
                         Settings
                       </a>
 
                       <Link href='/'>
                         <a
                           onClick={handleSignOut}
-                          className='block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700'>
+                          className='block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
                           Sign out
                         </a>
                       </Link>

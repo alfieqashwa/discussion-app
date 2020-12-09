@@ -1,12 +1,29 @@
 import Image from 'next/image';
+import { FC } from 'react';
 
-export const ProfileImage = ({ width, height, src, alt, layout }) => (
+type Props = {
+  className: string;
+  width: string;
+  height: string;
+  src: string;
+  alt: string;
+  layout: 'fixed' | 'intrinsic' | 'responsive';
+};
+
+export const ProfileImage: FC<Props> = ({
+  className,
+  width,
+  height,
+  src,
+  alt,
+  layout,
+}) => (
   <Image
+    className={className}
     width={width}
     height={height}
     layout={layout}
     src={src}
     alt={alt}
-    className='w-10 h-10 m-4 rounded-full ring-1 ring-blue-700'
   />
 );

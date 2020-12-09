@@ -22,7 +22,7 @@ export default function Layout({
 
   return (
     <div className=''>
-      <Nav user={user} />
+      <Nav />
       <Header title={title} />
       <main>
         <div className='py-6 sm:px-6 lg:px-8'>
