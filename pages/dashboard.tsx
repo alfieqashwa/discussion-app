@@ -1,14 +1,27 @@
-import { FC, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
 import { useSession } from 'next-auth/client';
 
 import Layout from 'components/Layout';
+import { ProfileImage } from 'components/ProfileImage';
+
+type Props = {
+  id: number;
+  name: string;
+  email: string;
+  image: string;
+  role?: string;
+};
 
 const Dashboard: FC = () => {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [website, setWebsite] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+
   const [session, loading] = useSession();
   const router = useRouter();
-  const { data: users, error } = useSWR('api/user', { refreshInterval: 0 }); // override
 
   useEffect(() => {
     if (!(session || loading)) {
@@ -16,42 +29,97 @@ const Dashboard: FC = () => {
     }
   }, [session, loading]);
 
-  if (error) return <div>failed to load</div>;
-  if (!users) return <div>Loading...</div>;
+  const submitData = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      const body = { name, email, website, address, phone };
+      await fetch(`http://localhost:3000/api/organization`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      await router.push('/organizations');
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-  const user = users.filter((user) => user.email === session?.user.email);
   return (
     <Layout title='Dashboard'>
-      <div className='text-center'>
-        <h1 className='text-2xl'>Dashboard Page</h1>
-        <div className='mt-8 space-y-4'>
-          <h1 className='text-2xl capitalize'>from prisma database</h1>
-          <ul className='px-2 py-4 space-y-8 text-xl'>
-            {user.map((user) => (
-              <li
-                key={user.id}
-                className='flex items-center justify-center space-x-2'>
-                <img
-                  className='h-16 border-4 border-pink-400 rounded-full '
-                  src={user.image}
-                  alt={user.name}
-                />
-                <div>
-                  <h2>Email: {user.email}</h2>
-                  <h2>Name: {user.name}</h2>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className='mt-8 space-y-4'>
-          <h1 className='text-2xl capitalize'>from user session</h1>
-          <div className='text-xl'>
-            {JSON.stringify(session?.user.email, null, 4)}
-          </div>
-        </div>
+      <div className='mt-8 space-y-4 text-center'>
+        <img
+          className='inline-block rounded-full w-36 h-36 ring ring-pink-700 ring-offset-2'
+          src={session?.user.image}
+          alt={session?.user.name}
+        />
+        <h1 className='text-2xl font-medium text-gray-700 capitalize'>
+          Welcome, {session?.user.name} !
+        </h1>
+        <p className='text-gray-600'>
+          Please add your Organization info below...
+        </p>
       </div>
+      <form
+        onSubmit={submitData}
+        className='flex flex-col justify-start mx-4 mt-8 space-y-4 bg-blue-100'>
+        <div className='space-x-2 text-gray-700 text-md'>
+          <label>Organization:</label>
+          <input
+            autoFocus
+            type='text'
+            name='name'
+            placeholder="Organization's name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className='space-x-2 text-gray-700 text-md'>
+          <label>Email:</label>
+          <input
+            type='email'
+            name='email'
+            placeholder='example@email.com'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className='space-x-2 text-gray-700 text-md'>
+          <label>Website:</label>
+          <input
+            type='text'
+            name='website'
+            placeholder="Website's URL"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
+        <div className='space-x-2 text-gray-700 text-md'>
+          <label>Phone:</label>
+          <input
+            type='text'
+            name='phone'
+            placeholder='+62-81-280-000-980'
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+        <div className='space-x-2 text-gray-700 text-md'>
+          <label>Address:</label>
+          <input
+            type='text'
+            name='website'
+            placeholder='Orgs address'
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+        <button
+          type='submit'
+          disabled={!name || !email || !website || !phone || !address}
+          className='py-2 text-xl bg-blue-800 rounded-lg text-gray-50 hover:bg-blue-700 disabled:bg-gray-800 disabled:opacity-50'>
+          Submit
+        </button>
+      </form>
     </Layout>
   );
 };

@@ -14,10 +14,15 @@ module.exports = {
       gray: colors.coolGray,
       blue: colors.lightBlue,
       red: colors.rose,
-      pink: colors.fuchsia,
+      fushcia: colors.fuchsia,
+      cyan: colors.cyan,
     },
   },
   variants: {
+    extend: {
+      opacity: ['disabled'],
+      backgroundColor: ['disabled']
+    }
   },
   plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 };
