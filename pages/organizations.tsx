@@ -4,27 +4,10 @@ import Image from 'next/image';
 
 import Layout from 'components/Layout';
 import prisma from 'lib/prisma';
+import { OrgProps } from 'types';
 
 type Props = {
   organizations: OrgProps[];
-};
-
-type OrgProps = {
-  id: number;
-  email: string;
-  name: string;
-  address: string;
-  phone: string;
-  website: string;
-  logo: string;
-  users?: [UserProps];
-};
-
-type UserProps = {
-  id: number;
-  name: string;
-  email: string;
-  image?: string;
 };
 
 const Organizations: FC<Props> = ({ organizations }) => {
@@ -79,7 +62,7 @@ const Organizations: FC<Props> = ({ organizations }) => {
                   alt={org.name}
                   width='400'
                   height='200'
-                  layout='fixed'
+                  layout='responsive'
                 />
                 <dl className='grid items-center grid-cols-2 grid-rows-2 sm:block lg:grid xl:block'>
                   <div>
@@ -100,7 +83,7 @@ const Organizations: FC<Props> = ({ organizations }) => {
                       {org.website}
                     </dd>
                   </div>
-                  <div className='col-start-2 row-start-1 row-end-3'>
+                  <div className='col-start-2 row-start-1 row-end-3 '>
                     <dt className='sr-only'>Users</dt>
                     <dd className='flex justify-end -space-x-2 sm:justify-start lg:justify-end xl:justify-start'>
                       {org.users.map((user) => (
@@ -130,6 +113,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     include: {
       users: {
         select: {
+          id: true,
           name: true,
           email: true,
           image: true,
