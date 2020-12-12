@@ -3,5 +3,6 @@ export function replaceSpaceToDash(str: string): string {
 }
 
 export function replaceDashToSpace(str: string | string[] ): string {
+  ///@ts-ignore
   return str.replace(/-/g, ' ');
 }
