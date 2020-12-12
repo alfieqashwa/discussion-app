@@ -5,7 +5,8 @@ import Adapters from 'next-auth/adapters';
 
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+
+  const prisma = new PrismaClient()
 
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
 export default authHandler;

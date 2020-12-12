@@ -1,5 +1,7 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Image from 'next/image';
 
 import Layout from 'components/Layout';
@@ -11,6 +13,8 @@ type Props = {
 };
 
 const Organizations: FC<Props> = ({ organizations }) => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <Layout title='Organizations'>
       <section className='px-4 pt-4 pb-4 space-y-4 sm:px-6 lg:px-4 xl:px-6 sm:pb-6 lg:pb-4 xl:pb-6'>
@@ -54,52 +58,55 @@ const Organizations: FC<Props> = ({ organizations }) => {
         </form>
         <ul className='grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2'>
           {organizations.map((org) => (
-            <li key={org.id} className=''>
-              <a className='block p-4 border border-gray-200 rounded-lg hover:bg-gradient-to-br from-green-400 to-cyan-500 hover:border-transparent hover:shadow-lg group'>
-                <Image
-                  className='bg-cover rounded-lg '
-                  src={org.logo}
-                  alt={org.name}
-                  width='400'
-                  height='200'
-                  layout='responsive'
-                />
-                <dl className='grid items-center grid-cols-2 grid-rows-2 sm:block lg:grid xl:block'>
-                  <div>
-                    <dt className='sr-only'>Name</dt>
-                    <dd className='font-medium leading-6 text-black group-hover:text-white'>
-                      {org.name}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className='sr-only'>Phone</dt>
-                    <dd className='text-sm font-medium group-hover:text-blue-200 sm:mb-4 lg:mb-0 xl:mb-4'>
-                      {org.phone}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className='sr-only'>Website</dt>
-                    <dd className='text-sm font-medium group-hover:text-blue-200 sm:mb-4 lg:mb-0 xl:mb-4'>
-                      {org.website}
-                    </dd>
-                  </div>
-                  <div className='col-start-2 row-start-1 row-end-3 '>
-                    <dt className='sr-only'>Users</dt>
-                    <dd className='flex justify-end -space-x-2 sm:justify-start lg:justify-end xl:justify-start'>
-                      {org.users.map((user) => (
-                        <img
-                          key={user.id}
-                          src={user.image}
-                          alt={user.name}
-                          // width='48'
-                          // height='48'
-                          className='w-10 h-10 bg-gray-100 border-2 border-white rounded-full'
-                        />
-                      ))}
-                    </dd>
-                  </div>
-                </dl>
-              </a>
+            <li key={org.id}>
+              <Link href='/organizations/[id]' as={`/organizations/${org.id}`}>
+                <a className='block p-4 transition duration-150 ease-in-out border border-gray-200 rounded-lg hover:bg-fushcia-400 hover:border-transparent hover:shadow-lg group'>
+                  <Image
+                    className='bg-cover rounded-lg '
+                    src={org.logo}
+                    alt={org.name}
+                    width={400}
+                    height={240}
+                    layout='responsive'
+                  />
+                  <dl className='grid items-center grid-cols-2 grid-rows-2 sm:block lg:grid xl:block'>
+                    <div>
+                      <dt className='sr-only'>Name</dt>
+                      <dd className='font-medium leading-6 text-black group-hover:text-white'>
+                        {org.name}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className='sr-only'>Phone</dt>
+                      <dd className='text-sm font-medium group-hover:text-blue-200 sm:mb-4 lg:mb-0 xl:mb-4'>
+                        {org.phone}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className='sr-only'>Website</dt>
+                      <dd className='text-sm font-medium group-hover:text-blue-200 sm:mb-4 lg:mb-0 xl:mb-4'>
+                        {org.website}
+                      </dd>
+                    </div>
+                    <div className='col-start-2 row-start-1 row-end-3 '>
+                      <dt className='sr-only'>Users</dt>
+                      <dd className='flex justify-end -space-x-2 sm:justify-start lg:justify-end xl:justify-start'>
+                        {org.users.map((user) => (
+                          <Image
+                            key={user.id}
+                            src={user.image}
+                            alt={user.name}
+                            width={48}
+                            height={48}
+                            layout='fixed'
+                            className='w-10 h-10 bg-gray-100 border-2 border-white rounded-full'
+                          />
+                        ))}
+                      </dd>
+                    </div>
+                  </dl>
+                </a>
+              </Link>
             </li>
           ))}
         </ul>
