@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Layout from 'components/Layout';
 import prisma from 'lib/prisma';
 import { OrgProps } from 'types';
+import { replaceSpaceToDash } from 'lib/replaceString';
 
 type Props = {
   organizations: OrgProps[];
@@ -59,8 +60,8 @@ const Organizations: FC<Props> = ({ organizations }) => {
         <ul className='grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2'>
           {organizations.map((org) => (
             <li key={org.id}>
-              <Link href='/organizations/[id]' as={`/organizations/${org.id}`}>
-                <a className='block p-4 transition duration-150 ease-in-out border border-gray-200 rounded-lg hover:bg-fushcia-400 hover:border-transparent hover:shadow-lg group'>
+              <Link href={`/organizations/${replaceSpaceToDash(org.name)}`}>
+                <a className='block p-4 transition duration-150 ease-in-out border border-gray-200 rounded-lg hover:bg-cyan-300 hover:border-transparent hover:shadow-lg group'>
                   <Image
                     className='bg-cover rounded-lg '
                     src={org.logo}

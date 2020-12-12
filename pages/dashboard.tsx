@@ -70,7 +70,7 @@ const Dashboard: FC = () => {
             name='name'
             placeholder="Organization's name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value.toLowerCase())}
           />
         </div>
         <div className='space-x-2 text-gray-700 text-md'>
@@ -110,7 +110,7 @@ const Dashboard: FC = () => {
             name='website'
             placeholder='Orgs address'
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            onChange={(e) => setAddress(e.target.value.toLowerCase())}
           />
         </div>
         <button

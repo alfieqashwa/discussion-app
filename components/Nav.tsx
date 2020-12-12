@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Transition } from '@headlessui/react';
 import { signIn, signOut, useSession } from 'next-auth/client';
 
 import { ActiveLink } from './ActiveLink';
-import { ProfileImage } from './ProfileImage';
 
 import { baseUrl } from 'utils/baseUrl';
 import { menuProps, menus } from 'utils/menuNav';
@@ -48,7 +48,9 @@ export default function Nav() {
                     <Link href='/'>
                       <a
                         className={`px-4 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' ${
-                          router.pathname === '/' ? 'bg-gray-900' : ''
+                          router.pathname === '/'
+                            ? 'bg-gray-900 text-cyan-400'
+                            : ''
                         }`}>
                         Home
                       </a>
@@ -57,7 +59,9 @@ export default function Nav() {
                     <ActiveLink href='/dashboard'>
                       <a
                         className={`px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' ${
-                          router.pathname === '/dashboard' ? 'bg-gray-900' : ''
+                          router.pathname === '/dashboard'
+                            ? 'bg-gray-900 text-cyan-400'
+                            : ''
                         }`}>
                         Dashboard
                       </a>
@@ -68,7 +72,9 @@ export default function Nav() {
                       <ActiveLink href={menu.path}>
                         <a
                           className={`px-3 py-2 text-sm font-medium text-gray-300 rounded-md hover:text-white hover:bg-gray-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white' ${
-                            router.pathname === menu.path ? 'bg-gray-900' : ''
+                            router.pathname === menu.path
+                              ? 'bg-gray-900 text-cyan-400'
+                              : ''
                           }`}>
                           {menu.title}
                         </a>
@@ -114,7 +120,7 @@ export default function Nav() {
                         id='user-menu'
                         aria-haspopup='true'>
                         <span className='sr-only'>Open user menu</span>
-                        <ProfileImage
+                        <Image
                           className='w-10 h-10 m-4 rounded-full ring-1 ring-blue-700'
                           src={session.user.image}
                           alt={session.user.name}
@@ -266,7 +272,7 @@ export default function Nav() {
                   <div className='pt-4 pb-3 border-t border-gray-700'>
                     <div className='flex items-center px-5'>
                       <div className='flex-shrink-0'>
-                        <ProfileImage
+                        <Image
                           className='w-10 h-10 m-4 rounded-full ring-1 ring-blue-700'
                           src={session.user.image}
                           alt={session.user.name}

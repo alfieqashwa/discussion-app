@@ -10,7 +10,7 @@ class MyDocument extends Document {
     return (
       <Html lang='en'>
         <Head />
-          <body className='container mx-auto antialiased max-w-7xl'>
+          <body className='container mx-auto antialiased'>
           <Main />
           <NextScript />
         </body>
