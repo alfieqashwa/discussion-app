@@ -1,17 +1,14 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Image from 'next/image';
 
 import Layout from 'components/Layout';
 import prisma from 'lib/prisma';
 import { OrgProps } from 'types';
-import { replaceSpaceToDash } from 'lib/replaceString';
 
-import { Header } from './Header';
-import { Search } from './Search';
-import { Card } from './Card';
+import { Header } from 'components/organizations/Header';
+import { Search } from 'components/organizations/Search';
+import { Card } from 'components/organizations/Card';
 
 type Props = {
   organizations: OrgProps[];

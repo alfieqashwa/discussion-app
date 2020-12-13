@@ -1,9 +1,11 @@
 export const Header = () => (
   <header className='flex items-center justify-between'>
-    <h2 className='text-lg font-medium leading-6 text-black'>Organizations</h2>
-    <button className='flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200 hover:text-blue-800 group'>
+    <h2 className='text-2xl font-semibold leading-6 text-blue-600 lg:text-4xl'>
+      Organizations
+    </h2>
+    <button className='flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-md lg:px-5 lg:text-xl hover:bg-blue-200 hover:text-blue-800 group'>
       <svg
-        className='mr-2 group-hover:text-blue-600text-blue-500'
+        className='mr-2 text-blue-500 group-hover:text-blue-600'
         width='12'
         height='20'
         fill='currentColor'>

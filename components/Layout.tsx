@@ -15,7 +15,7 @@ export default function Layout({
   const [session, loading] = useSession();
 
   return (
-    <div className=''>
+    <div>
       <Nav />
       <Header title={title} />
       <main>

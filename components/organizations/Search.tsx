@@ -12,7 +12,7 @@ export const Search = () => (
       />
     </svg>
     <input
-      className='w-full py-2 pl-10 text-sm text-black placeholder-gray-500 border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none'
+      className='w-full py-2 pl-10 text-sm text-gray-700 placeholder-gray-500 border border-gray-200 rounded-md lg:text-lg lg:py-3 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none'
       type='text'
       aria-label='Filter organizations'
       placeholder='Filter organizations'
