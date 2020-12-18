@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 
 import Layout from 'components/Layout';
-import { ProfileImage } from 'components/ProfileImage';
 
 type Props = {
   id: number;
@@ -19,9 +18,13 @@ const Dashboard: FC = () => {
   const [website, setWebsite] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [address, setAddress] = useState<string>('');
+  const [image, setImage] = useState<File>();
+  const [preview, setPreview] = useState<string>();
 
   const [session, loading] = useSession();
   const router = useRouter();
+
+  const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
 
   useEffect(() => {
     if (!(session || loading)) {
@@ -29,10 +32,46 @@ const Dashboard: FC = () => {
     }
   }, [session, loading]);
 
+  useEffect(() => {
+    if (image) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(image);
+    } else {
+      setPreview(null);
+    }
+  }, [image]);
+
+  const uploadFile = async (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.substr(0, 5) === 'image') {
+      setImage(file);
+    } else {
+      setImage(null);
+    }
+  };
+
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { name, email, website, address, phone };
+      const formData = new FormData();
+      formData.append('file', image);
+      formData.append(
+        'upload_preset',
+        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+      );
+
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      const logo = await data.secure_url;
+
+      const body = { name, email, website, address, phone, logo };
+
       await fetch(`http://localhost:3000/api/organization`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -111,6 +150,16 @@ const Dashboard: FC = () => {
             placeholder='Orgs address'
             value={address}
             onChange={(e) => setAddress(e.target.value.toLowerCase())}
+          />
+        </div>
+        <div>
+          <label htmlFor='image'>Image:</label>
+          <input
+            type='file'
+            id='file'
+            name='file'
+            placeholder='Upload Image'
+            onChange={uploadFile}
           />
         </div>
         <button

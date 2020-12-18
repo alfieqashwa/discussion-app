@@ -1,7 +1,6 @@
 // source: https://github.com/leerob/next-prisma/blob/master/pages/songs/%5Bid%5D.js
 
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Image from 'next/image';
 
 import prisma from 'lib/prisma';
 import Layout from 'components/Layout';

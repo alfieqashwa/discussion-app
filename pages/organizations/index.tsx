@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
 
 import Layout from 'components/Layout';
 import prisma from 'lib/prisma';
@@ -15,8 +14,8 @@ type Props = {
 };
 
 const Organizations: FC<Props> = ({ organizations }) => {
-  const router = useRouter();
-  const { id } = router.query;
+  // const router = useRouter();
+  // const { id } = router.query;
   return (
     <Layout title='Organizations'>
       <section className='px-4 pt-2 pb-4 space-y-4 sm:px-6 lg:px-4 xl:px-6 sm:pb-6 lg:pb-4 xl:pb-6'>
