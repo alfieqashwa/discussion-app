@@ -20,6 +20,7 @@ const Dashboard: FC = () => {
   const [address, setAddress] = useState<string>('');
   const [image, setImage] = useState<File>();
   const [preview, setPreview] = useState<string>();
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
 
   const [session, loading] = useSession();
   const router = useRouter();
@@ -63,6 +64,8 @@ const Dashboard: FC = () => {
         process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
       );
 
+      setImageLoading(true);
+
       const response = await fetch(url, {
         method: 'POST',
         body: formData,
@@ -81,6 +84,7 @@ const Dashboard: FC = () => {
     } catch (err) {
       console.error(err);
     }
+    setImageLoading(false);
   };
 
   return (
