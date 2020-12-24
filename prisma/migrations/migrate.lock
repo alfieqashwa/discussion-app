@@ -1,8 +1,0 @@
-# Prisma Migrate lockfile v1
-
-20201126151218-init
-20201126152459-customize-next-auth
-20201127165858-changed-entity-name-to-member-for-general-explanation
-20201209153330-creatednizations-one2many-to-users
-20201210180239-added-logo-field-in-organization-model
-20201212203917-modified-name-of-organization-field-to-be-unique

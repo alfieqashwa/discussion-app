@@ -7,11 +7,18 @@ export type UserProps = {
 
 export type OrgProps = {
   id: number;
-  email: string;
   name: string;
-  address: string;
-  phone: string;
-  website: string;
   logo: string;
-  users: [UserProps];
+  email: string;
+  phone: string;
+  website?: string;
+  address?: [AddressProps];
+  users?: [UserProps];
+};
+
+export type AddressProps = {
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
 };
