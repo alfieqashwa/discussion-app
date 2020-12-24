@@ -3,6 +3,7 @@ export type UserProps = {
   email: string;
   name?: string;
   image?: string | null;
+  isRegistered?: boolean;
 };
 
 export type OrgProps = {

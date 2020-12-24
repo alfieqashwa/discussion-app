@@ -1,18 +1,13 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
-import useSWR from 'swr';
 import { useForm } from 'react-hook-form';
 
-import { fetcher } from 'lib/fetcher';
 import { OrgProps } from 'types';
 import Layout from 'components/Layout';
 
 const Dashboard: FC = () => {
   const { register, errors, handleSubmit } = useForm<OrgProps>();
-
-  // TODO: https://api.printful.com/countries
-  // auth_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7fSwiZXhwIjoxNjA4OTAwMTcwfQ.TOMpxoJmb6ZsNkD7hETUKFaV-hg5IOYJZiyhrhgQjUY"
 
   const onSubmit = (data) => {
     alert(JSON.stringify(data, null, 2));
@@ -20,111 +15,145 @@ const Dashboard: FC = () => {
 
   console.log(errors);
 
-  const { data, error } = useSWR(
-    'https://api.first.org/data/v1/countries',
-    fetcher
-  );
-
-  if (error) return <div>failed to load</div>;
-  if (!data) return <div>Loading...</div>;
-
-  console.log(data);
-
   return (
     <Layout title='Dashboard'>
-      <div>
+      <div className='mt-5 md:mt-0 md:col-span-2'>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label htmlFor='name'>Organization Name</label>
-            <select name='name' placeholder='Org Name'>
-              ref=
-              {register({
-                required: true,
-                minLength: 3,
-                maxLength: 20,
-                pattern: /^[A-Za-z]+$/i,
-              })}
-              <option value='Select...'>Select</option>
-              <option value='org 1'>Org 1</option>
-              <option value='org 2'>Org 2</option>
-            </select>
-            {errors.name && 'Name is required'}
-          </div>
-          <div>
-            <label>Image</label>
-            <input
-              name='logo'
-              type='text'
-              placeholder='TODO Logo'
-              ref={register({ required: true })}
-            />
-          </div>
-          <div>
-            <label>Email</label>
-            <input
-              name='email'
-              type='email'
-              placeholder='Email'
-              ref={register({
-                required: true,
-                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              })}
-            />
-            {errors.email && <span>Email is required</span>}
-          </div>
-          <div>
-            <label>Phone</label>
-            <input
-              name='phone'
-              type='tel'
-              placeholder='Phone'
-              ref={register({ required: true, maxLength: 11, minLength: 8 })}
-            />
-            {errors.phone && <span>Min length is 7 numbers</span>}
-          </div>
-          <div>
-            <label htmlFor='website'>Website</label>
-            <input
-              name='website'
-              type='text'
-              placeholder='Website'
-              ref={register}
-            />
-          </div>
-          <div>
-            <label htmlFor='address'>Address</label>
-            <input
-              name='address'
-              type='text'
-              placeholder='Address'
-              ref={register}
-            />
-          </div>
-          <div>
-            <label htmlFor='city'>City</label>
-            <input name='city' type='text' placeholder='City' ref={register} />
-          </div>
-          <div>
-            <label htmlFor='state'>State</label>
-            {/* <select name='state' placeholder='State' ref={register}>
-              <option value={countries.name}>{countries.name}</option>
-            </select> */}
-          </div>
-          <div>
-            <label htmlFor='zip'>Zip</label>
-            <input name='zip' type='text' placeholder='Zip' ref={register} />
-          </div>
+          <div className='overflow-hidden shadow sm:rounded-md'>
+            <div className='px-4 py-5 bg-white sm:p-6'>
+              <div className='grid grid-cols-6 gap-6'>
+                <div className='col-span-6 sm:col-span-3'>
+                  <label
+                    htmlFor='name'
+                    className='block text-sm font-medium text-gray-700'>
+                    Name
+                  </label>
+                  <input
+                    type='text'
+                    name='name'
+                    id='name'
+                    autoComplete='organization-name'
+                    className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    ref={register({
+                      required: true,
+                      minLength: 3,
+                      maxLength: 20,
+                    })}
+                  />
+                  {errors.name && (
+                    <span className='text-sm text-red-400'>
+                      This field is required
+                    </span>
+                  )}
+                </div>
 
-          <div>
-            <label>Aggree of the Terms?</label>
-            <input
-              type='radio'
-              value='Yes'
-              ref={register({ required: true })}
-            />
-            <input type='radio' value='No' ref={register({ required: true })} />
+                <div className='col-span-6 sm:col-span-4'>
+                  <label
+                    htmlFor='email'
+                    className='block text-sm font-medium text-gray-700'>
+                    Email address
+                  </label>
+                  <input
+                    type='text'
+                    name='email'
+                    id='email'
+                    autoComplete='email'
+                    className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    ref={register({
+                      required: true,
+                      pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    })}
+                  />
+                </div>
+
+                <div className='col-span-6 sm:col-span-3'>
+                  <label
+                    htmlFor='country'
+                    className='block text-sm font-medium text-gray-700'>
+                    Country / Region
+                  </label>
+                  <select
+                    id='country'
+                    name='country'
+                    autoComplete='country'
+                    className='block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'>
+                    <option>United States</option>
+                    <option>Canada</option>
+                    <option>Mexico</option>
+                  </select>
+                </div>
+
+                <div className='col-span-6'>
+                  <label
+                    htmlFor='address'
+                    className='block text-sm font-medium text-gray-700'>
+                    Street address
+                  </label>
+                  <input
+                    type='text'
+                    name='address'
+                    id='address'
+                    autoComplete='address'
+                    className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    ref={register}
+                  />
+                </div>
+
+                <div className='col-span-6 sm:col-span-6 lg:col-span-2'>
+                  <label
+                    htmlFor='city'
+                    className='block text-sm font-medium text-gray-700'>
+                    City
+                  </label>
+                  <input
+                    type='text'
+                    name='city'
+                    id='city'
+                    className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    ref={register}
+                  />
+                </div>
+
+                <div className='col-span-6 sm:col-span-3 lg:col-span-2'>
+                  <label
+                    htmlFor='state'
+                    className='block text-sm font-medium text-gray-700'>
+                    State / Province
+                  </label>
+                  <input
+                    type='text'
+                    name='state'
+                    id='state'
+                    className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    ref={register}
+                  />
+                </div>
+
+                <div className='col-span-6 sm:col-span-3 lg:col-span-2'>
+                  <label
+                    htmlFor='zip'
+                    className='block text-sm font-medium text-gray-700'>
+                    ZIP / Postal
+                  </label>
+                  <input
+                    type='text'
+                    name='zip'
+                    id='zip'
+                    autoComplete='zip'
+                    className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    ref={register}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className='px-4 py-3 text-right bg-gray-50 sm:px-6'>
+              <button
+                type='submit'
+                className='inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
+                Save
+              </button>
+            </div>
           </div>
-          <input type='submit' />
         </form>
       </div>
     </Layout>
