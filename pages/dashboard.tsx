@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 import { useForm } from 'react-hook-form';
@@ -10,10 +10,47 @@ import { OrgProps } from 'types';
 import Layout from 'components/Layout';
 
 const Dashboard: FC = () => {
-  const { register, errors, handleSubmit } = useForm<OrgProps>();
+  const router = useRouter();
+  const { register, errors, handleSubmit, reset } = useForm<OrgProps>({
+    mode: 'onChange',
+  });
 
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data, null, 2));
+  const onSubmit = async (data, e) => {
+    e.target.reset(); // reset after form submit
+
+    const {
+      name,
+      email,
+      country,
+      street,
+      city,
+      state,
+      zip,
+      website,
+      phone,
+    } = data;
+
+    try {
+      const body = {
+        name,
+        email,
+        country,
+        street,
+        city,
+        state,
+        zip,
+        website,
+        phone,
+      };
+      await fetch(`http://localhost:3000/api/organization/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      await router.push('/fileupload');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   console.log(errors);
@@ -104,8 +141,8 @@ const Dashboard: FC = () => {
                   </label>
                   <input
                     type='text'
-                    name='address'
-                    id='address'
+                    name='street'
+                    id='street'
                     autoComplete='address'
                     className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
                     ref={register}
@@ -207,72 +244,18 @@ const Dashboard: FC = () => {
                 </div>
               </div>
 
-              <div>
-                <label className='block text-sm font-medium text-gray-700'>
-                  Logo
-                </label>
-                <div className='flex items-center mt-2'>
-                  <span className='inline-block w-12 h-12 overflow-hidden bg-gray-100 rounded-full'>
-                    <svg
-                      className='w-full h-full text-gray-300'
-                      fill='currentColor'
-                      viewBox='0 0 24 24'>
-                      <path d='M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z' />
-                    </svg>
-                  </span>
-                  <button
-                    type='button'
-                    className='px-3 py-2 ml-5 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'>
-                    Change
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className='block text-sm font-medium text-gray-700'>
-                  Upload files
-                </label>
-                <div className='flex justify-center px-6 pt-5 pb-6 mt-2 border-2 border-gray-300 border-dashed rounded-md'>
-                  <div className='space-y-1 text-center'>
-                    <svg
-                      className='w-12 h-12 mx-auto text-gray-400'
-                      stroke='currentColor'
-                      fill='none'
-                      viewBox='0 0 48 48'
-                      aria-hidden='true'>
-                      <path
-                        d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
-                        stroke-width='2'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                      />
-                    </svg>
-                    <div className='flex text-sm text-gray-600'>
-                      <label
-                        htmlFor='file-upload'
-                        className='relative font-medium text-blue-600 bg-white rounded-md cursor-pointer hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500'>
-                        <span>Upload a file</span>
-                        <input
-                          id='file-upload'
-                          name='file-upload'
-                          type='file'
-                          className='sr-only'
-                        />
-                      </label>
-                      <p className='pl-1'>or drag and drop</p>
-                    </div>
-                    <p className='text-xs text-gray-500'>
-                      PNG, JPG, GIF up to 10MB
-                    </p>
-                  </div>
-                </div>
-                <div className='px-4 py-3 mt-4 text-right bg-gray-50 sm:px-6'>
-                  <button
-                    type='submit'
-                    className='inline-flex justify-center px-4 py-2 text-sm font-medium bg-blue-800 border border-transparent rounded-md shadow-sm text-gray-50 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'>
-                    Submit
-                  </button>
-                </div>
+              <div className='flex justify-end px-4 py-3 mt-4 space-x-4 bg-gray-50 sm:px-6'>
+                <button
+                  type='reset'
+                  onClick={() => reset()}
+                  className='inline-flex justify-center px-4 py-2 text-sm font-medium bg-gray-800 border border-transparent rounded-md shadow-sm text-gray-50 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'>
+                  Reset
+                </button>
+                <button
+                  type='submit'
+                  className='inline-flex justify-center px-4 py-2 text-sm font-medium bg-blue-800 border border-transparent rounded-md shadow-sm text-gray-50 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'>
+                  Submit
+                </button>
               </div>
             </div>
           </div>

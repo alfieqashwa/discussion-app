@@ -9,7 +9,7 @@ export const Card = ({ org }) => (
   <li>
     <Link href={`/organizations/${replaceSpaceToDash(org.name)}`}>
       <a className='block p-4 transition duration-150 ease-in-out border border-gray-200 rounded-lg hover:bg-cyan-300 hover:border-transparent hover:shadow-lg group'>
-        <Hero src={org.logo} alt={org.name} />
+        {/* <Hero src={org.logo} alt={org.name} /> */}
         <dl className='grid items-center grid-cols-2 grid-rows-2 mt-2 lg:mt-4 sm:block lg:grid xl:block'>
           <div>
             <dt className='sr-only'>Name</dt>

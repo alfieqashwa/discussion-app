@@ -1,4 +1,3 @@
-import { FormProvider } from 'react-hook-form';
 import { PostProps } from 'data/posts';
 
 const Card = ({ title, body, tag }: PostProps) => (

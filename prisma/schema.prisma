@@ -81,7 +81,7 @@ model Organization {
 
 model Address {
   id             Int           @id @default(autoincrement())
-  address        String?
+  street         String?
   city           String?
   state          String?
   country        String?

@@ -18,7 +18,8 @@ export type OrgProps = {
 };
 
 export type AddressProps = {
-  address: string;
+  country: string | null;
+  street: string;
   city: string;
   state: string;
   zip: string;

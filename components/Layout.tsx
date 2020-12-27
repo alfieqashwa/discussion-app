@@ -22,7 +22,7 @@ export default function Layout({
         <div className='hidden min-h-screen md:block md:w-1/12 lg:w-1/6 bg-fushcia-200'>
           <ul className='mt-8 space-y-5'>
             <li>
-              <Link href='#'>
+              <Link href='/discussion'>
                 <a className='flex items-center px-6 space-x-2 md:justify-center lg:justify-start'>
                   <svg
                     className='w-8 h-8'
@@ -42,7 +42,7 @@ export default function Layout({
               </Link>
             </li>
             <li>
-              <Link href='#'>
+              <Link href='/message'>
                 <a className='flex items-center px-6 space-x-2 md:justify-center lg:justify-start'>
                   <svg
                     className='w-8 h-8'
@@ -62,7 +62,7 @@ export default function Layout({
               </Link>
             </li>
             <li>
-              <Link href='#'>
+              <Link href='/user'>
                 <a className='flex items-center px-6 space-x-2 md:justify-center lg:justify-start'>
                   <svg
                     className='w-8 h-8'

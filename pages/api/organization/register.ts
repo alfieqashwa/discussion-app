@@ -6,7 +6,7 @@ import prisma from 'lib/prisma';
 import { getSession } from 'next-auth/client'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const {name, email, website, address, phone, logo} = req.body;
+  const {name, email, country, street, city, state, zip, website, phone} = req.body;
 
   const session = await getSession({ req })
   const result = await prisma.organization.create({
@@ -14,9 +14,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       name,
       email,
       website, 
-      address,
       phone,
-      logo,
+      address: {create: {country, street, city, state, zip}},
       users: { connect: {email: session?.user?.email }},
     }
   })
