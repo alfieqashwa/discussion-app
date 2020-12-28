@@ -11,6 +11,7 @@ CREATE TABLE "users" (
     "name" TEXT,
     "email_verified" TIMESTAMP(3),
     "image" TEXT,
+    "isRegistered" BOOLEAN DEFAULT false,
     "role" "Role" NOT NULL DEFAULT E'USER',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -66,10 +67,22 @@ CREATE TABLE "organizations" (
 "id" SERIAL,
     "email" TEXT,
     "name" TEXT NOT NULL,
-    "address" TEXT,
-    "phone" TEXT NOT NULL,
+    "phone" TEXT,
     "website" TEXT,
     "logo" TEXT,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Address" (
+"id" SERIAL,
+    "street" TEXT,
+    "city" TEXT,
+    "state" TEXT,
+    "country" TEXT,
+    "zip" TEXT,
+    "organizationId" INTEGER,
 
     PRIMARY KEY ("id")
 );
@@ -117,8 +130,14 @@ CREATE UNIQUE INDEX "organizations.email_unique" ON "organizations"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "organizations.name_unique" ON "organizations"("name");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Address_organizationId_unique" ON "Address"("organizationId");
+
 -- AddForeignKey
 ALTER TABLE "users" ADD FOREIGN KEY("organizationId")REFERENCES "organizations"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Address" ADD FOREIGN KEY("organizationId")REFERENCES "organizations"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD FOREIGN KEY("authorId")REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;

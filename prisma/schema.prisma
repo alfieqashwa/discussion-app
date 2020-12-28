@@ -71,7 +71,7 @@ model Organization {
   email   String?  @unique
   name    String   @unique
   address Address?
-  phone   String
+  phone   String?
   website String?
   logo    String?
   users   User[]
