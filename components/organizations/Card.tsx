@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Hero } from './Hero';
-
 import { replaceSpaceToDash } from 'lib/replaceString';
 
 export const Card = ({ org }) => (

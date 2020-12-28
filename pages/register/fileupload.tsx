@@ -73,7 +73,7 @@ export default function FileUpload() {
             <div className='px-4 py-5 space-y-6 bg-white sm:p-6'>
               <div>
                 <label className='block text-sm font-medium text-gray-700'>
-                  Logo
+                  Organization Logo
                 </label>
                 <div className='flex items-center mt-2'>
                   {preview ? (
@@ -123,7 +123,7 @@ export default function FileUpload() {
 
               <div>
                 <label className='block text-sm font-medium text-gray-700'>
-                  Cover photo
+                  Documents
                 </label>
                 <div className='flex justify-center px-6 pt-5 pb-6 mt-2 border-2 border-gray-300 border-dashed rounded-md'>
                   <div className='space-y-1 text-center'>
@@ -165,7 +165,7 @@ export default function FileUpload() {
               <button
                 type='submit'
                 className='inline-flex justify-center px-4 py-2 text-sm font-medium bg-blue-800 border border-transparent rounded-md shadow-sm text-gray-50 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'>
-                Save
+                Submit
               </button>
             </div>
           </div>

@@ -1,7 +1,9 @@
+import Layout from 'components/Layout';
+
 export default function Discussion() {
   return (
-    <div>
+    <Layout>
       <h2>Discussion Page</h2>
-    </div>
+    </Layout>
   );
 }

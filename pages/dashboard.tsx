@@ -10,13 +10,21 @@ import { OrgProps } from 'types';
 import Layout from 'components/Layout';
 
 const Dashboard: FC = () => {
+  const [session, loading] = useSession();
   const router = useRouter();
   const { register, errors, handleSubmit, reset } = useForm<OrgProps>({
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    if (!(session || loading)) {
+      router.push('/');
+    }
+  }, [session, loading]);
+
   const onSubmit = async (data, e) => {
     e.target.reset(); // reset after form submit
+    // console.log(data);
 
     const {
       name,
@@ -32,7 +40,7 @@ const Dashboard: FC = () => {
 
     try {
       const body = {
-        name,
+        name: name.toLowerCase(),
         email,
         country,
         street,
@@ -47,7 +55,7 @@ const Dashboard: FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      await router.push('/fileupload');
+      await router.push('/register/fileupload');
     } catch (err) {
       console.log(err);
     }
@@ -125,10 +133,12 @@ const Dashboard: FC = () => {
                     id='country'
                     name='country'
                     autoComplete='country'
-                    className='block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'>
                     ref={register({ required: true })}
+                    className='block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'>
                     {data.map((country) => (
-                      <option value={country.name}>{country.name}</option>
+                      <option key={country.name} value={country.name}>
+                        {country.name}
+                      </option>
                     ))}
                   </select>
                 </div>

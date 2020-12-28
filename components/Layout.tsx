@@ -62,7 +62,7 @@ export default function Layout({
               </Link>
             </li>
             <li>
-              <Link href='/user'>
+              <Link href='/users'>
                 <a className='flex items-center px-6 space-x-2 md:justify-center lg:justify-start'>
                   <svg
                     className='w-8 h-8'
