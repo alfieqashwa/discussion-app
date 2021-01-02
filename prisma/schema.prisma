@@ -67,14 +67,15 @@ model VerificationRequest {
 }
 
 model Organization {
-  id      Int      @id @default(autoincrement())
-  email   String?  @unique
-  name    String   @unique
-  address Address?
-  phone   String?
-  website String?
-  logo    String?
-  users   User[]
+  id       Int       @id @default(autoincrement())
+  email    String?   @unique
+  name     String    @unique
+  address  Address?
+  document Document?
+  phone    String?
+  website  String?
+  logo     String?
+  users    User[]
 
   @@map("organizations")
 }
@@ -88,6 +89,17 @@ model Address {
   zip            String?
   organization   Organization? @relation(fields: [organizationId], references: [id])
   organizationId Int?
+}
+
+model Document {
+  id                     Int           @id @default(autoincrement())
+  formalAppLetter        String?
+  constitution           String?
+  byLaws                 String?
+  registrationPapersCopy String?
+  membership             String?
+  organization           Organization? @relation(fields: [organizationId], references: [id])
+  organizationId         Int?
 }
 
 model Post {

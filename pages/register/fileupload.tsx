@@ -121,7 +121,7 @@ export default function FileUpload() {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label className='block text-sm font-medium text-gray-700'>
                   Documents
                 </label>
@@ -159,7 +159,7 @@ export default function FileUpload() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className='px-4 py-3 text-right bg-gray-50 sm:px-6'>
               <button
